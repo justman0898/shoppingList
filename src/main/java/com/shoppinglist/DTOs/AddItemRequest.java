@@ -3,9 +3,13 @@ package com.shoppinglist.DTOs;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+@Data
+@NoArgsConstructor
 public class AddItemRequest {
     @NotBlank
     private String itemName;
@@ -16,5 +20,5 @@ public class AddItemRequest {
     private BigDecimal itemPrice;
     @NotBlank
     @Min(1)
-    private String itemQuantity;
+    private Long itemQuantity;
 }

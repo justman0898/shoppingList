@@ -9,6 +9,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -24,4 +27,5 @@ public class Item {
     private BigDecimal price;
     private Long quantity;
     private boolean active;
+    private Date createdAt = Date.valueOf(LocalDate.now());
 }
