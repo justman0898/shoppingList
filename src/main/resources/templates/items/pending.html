@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pending Shopping Items</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: #f8fafc;
+        }
+        .card {
+            border-radius: 1rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <h1 class="mb-4 text-center fw-bold text-primary">
+        <i class="fas fa-shopping-cart"></i> Pending Items
+    </h1>
+
+    <!-- Case: No items -->
+    <div th:if="${items == null or #lists.isEmpty(items)}" class="text-center mt-5">
+        <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+        <h4 class="text-muted">No pending items 🎉</h4>
+    </div>
+
+    <!-- Case: Items exist -->
+    <div class="row g-4" th:if="${items != null and !#lists.isEmpty(items)}">
+        <div class="col-md-4"
+             th:each="item : ${items}"
+             th:if="${item != null}">
+            <div class="card shadow-sm h-100">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <h5 class="card-title" th:text="${item.name}">Item Name</h5>
+                        <p class="card-text text-muted mb-2">
+                            Status: <span th:text="${item.status}">PENDING</span>
+                        </p>
+                    </div>
+
+                    <!-- Show button only if status is PENDING -->
+                    <form th:if="${item.status == 'PENDING'}"
+                          th:action="@{/items/mark-done/{id}(id=${item.id})}"
+                          method="post">
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-check"></i> Mark as Done
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

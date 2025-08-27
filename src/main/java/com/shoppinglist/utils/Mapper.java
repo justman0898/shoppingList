@@ -22,7 +22,7 @@ public class Mapper {
         response.setDescription(addedItem.getDescription());
         response.setPrice(addedItem.getPrice());
         response.setQuantity(addedItem.getQuantity());
-        response.setActive(addedItem.isActive());
+        response.setStatus(addedItem.isStatus());
         response.setCreatedAt(addedItem.getCreatedAt());
         return response;
     }

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Item</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f1f3f5;
+            padding: 2rem;
+        }
+
+        .form-wrapper {
+            max-width: 500px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #343a40;
+        }
+
+        label {
+            display: block;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 2rem;
+            background-color: #007bff;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0062cc;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-wrapper">
+    <h2>Add New Shopping Item</h2>
+
+    <form th:action="@{/items/add}" th:object="${item}" method="post">
+
+        <!-- Item Name -->
+        <label for="itemName">Item Name</label>
+        <input type="text" id="itemName" th:field="*{itemName}" placeholder="e.g. Milk" />
+        <div class="error" th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}">Invalid</div>
+
+        <!-- Item Description -->
+        <label for="itemDescription">Description</label>
+        <input type="text" id="itemDescription" th:field="*{itemDescription}" placeholder="e.g. 1L semi-skimmed milk" />
+        <div class="error" th:if="${#fields.hasErrors('itemDescription')}" th:errors="*{itemDescription}">Invalid</div>
+
+        <!-- Item Price -->
+        <label for="itemPrice">Price (€)</label>
+        <input type="number" step="0.01" id="itemPrice" th:field="*{itemPrice}" placeholder="e.g. 1.99" />
+        <div class="error" th:if="${#fields.hasErrors('itemPrice')}" th:errors="*{itemPrice}">Invalid</div>
+
+        <!-- Item Quantity -->
+        <label for="itemQuantity">Quantity</label>
+        <input type="number" id="itemQuantity" th:field="*{itemQuantity}" placeholder="e.g. 2" />
+        <div class="error" th:if="${#fields.hasErrors('itemQuantity')}" th:errors="*{itemQuantity}">Invalid</div>
+
+        <button type="submit">Add Item</button>
+    </form>
+</div>
+
+</body>
+</html>

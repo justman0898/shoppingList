@@ -96,7 +96,7 @@ class ShoppingListServicesImplTest {
         existing.setName("Item1");
         existing.setId(1L);
         existing.setQuantity(1L);
-        existing.setActive(true);
+        existing.setStatus(true);
         Item existing2 = new Item();
         existing2.setName("Item2");
         existing2.setId(2L);

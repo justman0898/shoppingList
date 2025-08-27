@@ -14,6 +14,6 @@ public class AddItemResponse {
     private String description;
     private BigDecimal price;
     private Long quantity;
-    private boolean active;
+    private boolean status;
     private Date createdAt = Date.valueOf(LocalDate.now());
 }

@@ -46,7 +46,7 @@ public class ShoppingListServicesImpl implements ShoppingListServices {
     @Override
     public List<AddItemResponse> getPendingItems() {
         List<Item> allItems = shoppingListRepository.findAll().stream()
-                .filter(item -> !(item.isActive())).toList();
+                .filter(item -> !(item.isStatus())).toList();
         return allItems.stream().map(Mapper::toResponse).toList();
     }
 

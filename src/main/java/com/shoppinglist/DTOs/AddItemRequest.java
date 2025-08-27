@@ -1,8 +1,6 @@
 package com.shoppinglist.DTOs;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,14 +9,17 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 public class AddItemRequest {
+    @NotNull
     @NotBlank
+    @NotEmpty
     private String itemName;
     @NotBlank
+    @NotNull
     private String itemDescription;
-    @NotBlank
+    @NotNull
     @PositiveOrZero
     private BigDecimal itemPrice;
-    @NotBlank
+    @NotNull
     @Min(1)
     private Long itemQuantity;
 }
