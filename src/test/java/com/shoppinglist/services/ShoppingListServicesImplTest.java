@@ -4,19 +4,22 @@ import com.shoppinglist.DTOs.AddItemRequest;
 import com.shoppinglist.DTOs.AddItemResponse;
 import com.shoppinglist.data.models.Item;
 import com.shoppinglist.data.repositories.ShoppingListRepository;
-import com.shoppinglist.utils.Mapper;
+import com.shoppinglist.exceptions.ItemNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -65,6 +68,63 @@ class ShoppingListServicesImplTest {
         item.setItemQuantity(2L);
         shoppingListServices.addItem(item);
         assertEquals(3L, existing.getQuantity());
+    }
+
+    @Test
+    void testCanFindEntireShoppingList(){
+        Item existing = new Item();
+        existing.setName("Item1");
+        existing.setId(1L);
+        existing.setQuantity(1L);
+        Item existing2 = new Item();
+        existing2.setName("Item2");
+        existing2.setId(2L);
+        existing2.setId(2L);
+        existing2.setQuantity(1L);
+
+        when(shoppingListRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"))).thenReturn(List.of(existing, existing2));
+
+        List <AddItemResponse> foundAll = shoppingListServices.getItems();
+        assertNotNull(foundAll);
+        assertEquals(2L, foundAll.size());
+        assertEquals(1L, foundAll.get(0).getId());
+    }
+
+    @Test
+    void testThatCanGetPendingItems(){
+        Item existing = new Item();
+        existing.setName("Item1");
+        existing.setId(1L);
+        existing.setQuantity(1L);
+        existing.setActive(true);
+        Item existing2 = new Item();
+        existing2.setName("Item2");
+        existing2.setId(2L);
+
+        when(shoppingListRepository.findAll()).thenReturn(List.of(existing, existing2));
+
+        List <AddItemResponse> foundPending = shoppingListServices.getPendingItems();
+
+        assertEquals(1L, foundPending.size());
+    }
+
+    @Test
+    void testThatItemCanBeRemovedFromShoppingList(){
+        Item existing = new Item();
+        existing.setName("Item1");
+        existing.setId(1L);
+
+        when(shoppingListRepository.existsById(1L)).thenReturn(Boolean.TRUE);
+        shoppingListServices.removeItem(1L);
+
+        verify(shoppingListRepository).deleteById(1L);
+    }
+
+    @Test
+    void testThatThrowExceptionIfItemNotFound() {
+        when(shoppingListRepository.existsById(any())).thenReturn(Boolean.FALSE);
+
+        assertThrowsExactly(ItemNotFoundException.class, ()->shoppingListServices.removeItem(1L));
     }
 
 
